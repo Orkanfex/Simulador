@@ -13,6 +13,6 @@ int main(int argc, char const *argv[])
     cout<<pr.getMat(0,1) << endl;
     cout<<pr.getMat(4,2) << endl;
     cout<<pr.getMat(2,6) << endl;
-
+    
     return 0;
 }
