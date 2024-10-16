@@ -1,18 +1,29 @@
-#include <iostream>
-#include <vector>
-#include "Componente.h"
-#include "Protoboard.h"
+#include "AND.h"
+#include "OR.h"
+#include "NOT.h"
+#include "WIRE.h"
+#include "Alocar.h"
 
-int main(int argc, char const *argv[])
-{
-    Protoboard pr;
-    AND portAnd;
+int main() {
+    Alocar alocador;
 
-    pr.setMat(0,1,3);
+    // Criação de componentes lógicos
+    AND andGate(0, 0, 1, 0, 2, 0);
+    OR orGate(0, 0, 1, 1, 2, 1);
+    NOT notGate(0, 0, 2, 2);
+    WIRE wire(0, 0, 1, 1);
 
-    cout<<pr.getMat(0,1) << endl;
-    cout<<pr.getMat(4,2) << endl;
-    cout<<pr.getMat(2,6) << endl;
-    
+    // Adiciona os componentes ao alocador e os aloca
+    alocador.adicionarComponente(&andGate);
+    alocador.adicionarComponente(&orGate);
+    alocador.adicionarComponente(&notGate);
+    alocador.adicionarComponente(&wire);
+
+    // Executa a simulação
+    alocador.simular();
+
+    // Exibe o estado da protoboard
+    alocador.imprimirBoard();
+
     return 0;
 }
