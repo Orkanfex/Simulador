@@ -1,11 +1,17 @@
 #include "IO.h"
-#include <iostream>
 
-// void IO::setEntrada(int bits[8]) {
-//     for (int i = 0; i < 8; i++)
-//     {
-//         entrada[i] = bits[i];
-//     }
-    
-// }
+void IO::setEntrada(const vector<int> &bits) {
+    entrada = bits;
+}
 
+void IO::setSaida(const vector<int> &bits) {
+    saida = bits;
+}
+
+vector<int> IO::getEntrada() const{
+    return entrada;
+}
+
+vector<int> IO::getSaida() const {
+    return  saida;
+}

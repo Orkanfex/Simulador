@@ -4,8 +4,9 @@
 using namespace std;
 
 BOARD::BOARD() {
-
+    int x = 225, y;
     for(int i = 0; i < 8; i++) {
+        y = 150;
         for(int j = 0; j < 8; j++) {
             board[i][j] = 0;
         }
