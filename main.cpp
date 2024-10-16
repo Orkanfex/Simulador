@@ -10,6 +10,7 @@
 #define INIT_PROTO_X 225
 #define INIT_PROTO_Y 150
 #define SIZE_PROTOBOARD 400
+#define PADDING_CONCTOR 50
 
 using namespace std;
 using namespace sf;
@@ -42,10 +43,10 @@ void plotProtoboard(RenderWindow &window) {
             shape.setFillColor(sf::Color::Black);
             shape.setPosition(x,y);
             conector.push_back(shape);
-            
-            y += 50;
+
+            y += PADDING_CONCTOR;
         }
-        x += 50;
+        x += PADDING_CONCTOR;
     }
 
     window.draw(protoboardBorda);
@@ -55,8 +56,39 @@ void plotProtoboard(RenderWindow &window) {
     }
 }
 
-void entradaBits(RenderWindow &window) {
-    RectangleShape entradaDados(Vector2(SIZE_PROTOBOARD - 100.f, 50.f));
+void plotEntradaBits(RenderWindow &window) {
+    int x, y;
+    RectangleShape entradaDados(Vector2(SIZE_PROTOBOARD/1.4f, 30.f));
+    vector<CircleShape> conector;
+    vector<CircleShape>::iterator it;
+
+
+    y = INIT_PROTO_Y+SIZE_PROTOBOARD+(PADDING_CONCTOR/2); // as colunas começam no 150
+    x = INIT_PROTO_X-(PADDING_CONCTOR/2) + (PADDING_CONCTOR*1.6); // as linhas começam no 225
+
+    entradaDados.setOutlineThickness(5.f);
+    entradaDados.setOutlineColor(Color::Black);
+    entradaDados.setPosition(x-PADDING_CONCTOR/2.f,y+(PADDING_CONCTOR/2.f));
+
+    for (int j = 0; j < 8; j++)
+    {
+        // posixy[i][j][0] = x;
+        // posixy[i][j][1] = y;
+
+        CircleShape shape(5.f);
+        shape.setFillColor(sf::Color::Black);
+        shape.setPosition(x,y);
+        conector.push_back(shape);
+
+        x += (PADDING_CONCTOR/1.5);
+    }
+
+    window.draw(entradaDados);
+    for (it = conector.begin(); it < conector.end(); ++it)
+    {
+        window.draw(*it);
+    }
+
 }
 
 int main() {
@@ -64,7 +96,9 @@ int main() {
 
     RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
 
-
+    CircleShape circulo(10.f);
+    circulo.setFillColor(Color::Red);
+    circulo.setPosition(250,250);
 
     while (window.isOpen())
     {
@@ -82,7 +116,11 @@ int main() {
 
 
         window.clear(Color::White);
+
         plotProtoboard(window);
+        plotEntradaBits(window);
+        window.draw(circulo);
+
         window.display();
     }
     
