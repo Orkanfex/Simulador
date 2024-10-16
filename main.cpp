@@ -48,7 +48,7 @@ void plotProtoboard(RenderWindow &window) {
         x += 50;
     }
 
-    //window.draw(protoboardBorda);
+    window.draw(protoboardBorda);
     for (it = conector.begin(); it < conector.end(); ++it)
     {
         window.draw(*it);
