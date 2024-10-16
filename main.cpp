@@ -44,6 +44,7 @@ void plotProtoboard(RenderWindow &window) {
             conector.push_back(shape);
             int a  = 2;
 
+            //testando
             y += 50;
         }
         x += 50;

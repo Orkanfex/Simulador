@@ -1,0 +1,3 @@
+/mnt/EC3652CB36529684/CC_2024/PP/Simulador/cmake-build-debug/CMakeFiles/Simulador.dir
+/mnt/EC3652CB36529684/CC_2024/PP/Simulador/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/EC3652CB36529684/CC_2024/PP/Simulador/cmake-build-debug/CMakeFiles/rebuild_cache.dir

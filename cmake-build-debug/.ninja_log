@@ -1,0 +1,13 @@
+# ninja log v5
+5	24	1729106900205836800	CMakeFiles/Simulador.dir/Componentes.cpp.o	3ec251cc4ccd8dba
+5	45	1729106900225288200	CMakeFiles/Simulador.dir/OR.cpp.o	c19a69d08ef5c95c
+4	47	1729106900225033600	CMakeFiles/Simulador.dir/AND.cpp.o	249e16e905f775bf
+5	55	1729106900235246400	CMakeFiles/Simulador.dir/NOT.cpp.o	bb507443b50273e3
+25	64	1729106900246063000	CMakeFiles/Simulador.dir/WIRE.cpp.o	4401dd5724cfc6d8
+47	359	1729106900539596500	CMakeFiles/Simulador.dir/IO.cpp.o	d9d885fb25506412
+6	441	1729106900622617600	CMakeFiles/Simulador.dir/BOARD.cpp.o	476c544bdf9c6a26
+45	545	1729106900726501800	CMakeFiles/Simulador.dir/Alocar.cpp.o	f83ecffee812be8c
+4	684	1729106900864521400	CMakeFiles/Simulador.dir/main.cpp.o	ba646bdd0a55fb26
+686	771	1729106900951390700	Simulador	be8e480933801611
+5	630	1729106945707282000	CMakeFiles/Simulador.dir/main.cpp.o	ba646bdd0a55fb26
+631	724	1729106945799644700	Simulador	be8e480933801611

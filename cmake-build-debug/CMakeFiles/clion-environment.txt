@@ -1,0 +1,4 @@
+ToolSet: 1.0 (local)Ninja: 1.11.1@/mnt/EC3652CB36529684/Program Files/clion-2024.1.1/bin/ninja/linux/x64/ninja
+Options: 
+
+Options:-DCMAKE_MAKE_PROGRAM=/mnt/EC3652CB36529684/Program Files/clion-2024.1.1/bin/ninja/linux/x64/ninja
