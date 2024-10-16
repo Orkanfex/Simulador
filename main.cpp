@@ -7,6 +7,10 @@
 #include "Alocar.h"
 #include <SFML/Graphics.hpp>
 
+#define INIT_PROTO_X 225
+#define INIT_PROTO_Y 150
+#define SIZE_PROTOBOARD 400
+
 using namespace std;
 using namespace sf;
 
@@ -25,10 +29,10 @@ void plotProtoboard(RenderWindow &window) {
 
 
     // plot protoboard
-    x = 225; // as linhas começam no 225
+    x = INIT_PROTO_X; // as linhas começam no 225
     for (int i = 0; i < 8; i++)
     {
-        y = 150; // as colunas começam no 150
+        y = INIT_PROTO_Y; // as colunas começam no 150
         for (int j = 0; j < 8; j++)
         {
             posixy[i][j][0] = x;
@@ -44,11 +48,15 @@ void plotProtoboard(RenderWindow &window) {
         x += 50;
     }
 
-    window.draw(protoboardBorda);
+    //window.draw(protoboardBorda);
     for (it = conector.begin(); it < conector.end(); ++it)
     {
         window.draw(*it);
     }
+}
+
+void entradaBits(RenderWindow &window) {
+    RectangleShape entradaDados(Vector2(SIZE_PROTOBOARD - 100.f, 50.f));
 }
 
 int main() {
