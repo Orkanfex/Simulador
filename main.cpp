@@ -5,7 +5,10 @@
 #include "NOT.h"
 #include "WIRE.h"
 #include "Alocar.h"
+#include "IO.h"
 #include <SFML/Graphics.hpp>
+
+#include "BOARD.h"
 
 #define INIT_PROTO_X 225
 #define INIT_PROTO_Y 150
@@ -62,6 +65,10 @@ void plotEntradaBits(RenderWindow &window) {
     vector<CircleShape> conector;
     vector<CircleShape>::iterator it;
 
+    Text bitTxt;
+    vector<Text> bitsTxt;
+    vector<Text>::iterator itxt;
+
 
     y = INIT_PROTO_Y+SIZE_PROTOBOARD+(PADDING_CONCTOR/2); // as colunas começam no 150
     x = INIT_PROTO_X-(PADDING_CONCTOR/2) + (PADDING_CONCTOR*1.6); // as linhas começam no 225
@@ -80,6 +87,12 @@ void plotEntradaBits(RenderWindow &window) {
         shape.setPosition(x,y);
         conector.push_back(shape);
 
+        bitTxt.setPosition(x,y);
+        // bitTxt.setString()
+        bitTxt.setFillColor(Color::Black);
+
+        bitsTxt.push_back(bitTxt);
+
         x += (PADDING_CONCTOR/1.5);
     }
 
@@ -92,8 +105,7 @@ void plotEntradaBits(RenderWindow &window) {
 }
 
 int main() {
-
-
+    BOARD myBoard;
     RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
 
     CircleShape circulo(10.f);
