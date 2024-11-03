@@ -4,18 +4,22 @@
 class Componentes {
 public:
     virtual ~Componentes() = default;
-    virtual void simulate(int board[8][8]) = 0;
-    virtual void alocar() = 0;
+    virtual void simulate() = 0;
+    virtual Componentes* alocar() = 0;
 };
 
 class AND : public Componentes{
 private:
     int output;
-    int input[8];
+    int inputA;
+    int inputB;
 public:
-    AND();
-    void simulate(int board[8][8]) override;
-    void alocar() override;
+    AND(int inputA = 0, int inputB = 0);
+
+    int getOutput() const;
+    void setInput(int inputA, int inputB);
+    void simulate();
+    Componentes *alocar();
 };
 
 // class NOT :public Componentes {
@@ -41,11 +45,12 @@ public:
 class WIRE :public Componentes {
 private:
     int output;
-    int input[8];
+    int input;
 public:
-    WIRE();
-    void simulate(int board[8][8]) override;
-    void alocar() override;
+    WIRE(int inputA = 0);
+    int getOutput() const;
+    void simulate();
+    Componentes *alocar();
 };
 
 #endif //COMPONENTES_H
