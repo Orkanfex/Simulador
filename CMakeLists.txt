@@ -22,7 +22,9 @@ add_executable(Simulador main.cpp
         AppSimulador.cpp
         AppSimulador.h
         CalcLogico.cpp
-        CalcLogico.h)
+        CalcLogico.h
+        BUttonComponentApp.cpp
+        BUttonComponentApp.h)
 
 target_compile_options(Simulador INTERFACE
         "$<${gcc_like_cxx}:-Wall;-Wextra;-Wshadow;-Wformat=2;-Wunused;-g>>"

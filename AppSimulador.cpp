@@ -5,6 +5,7 @@
 #include "AppSimulador.h"
 #include <iostream>
 
+
 AppSimulador::AppSimulador() {
 
     for (int i = 0; i < 8; i++) {
@@ -20,13 +21,16 @@ void AppSimulador::registraComponente(ComponentesApp * pComponente) {
 void AppSimulador::mainDoApp() {
     RenderWindow window(VideoMode(800, 800), "Simulador Lógico");
     vector<RectangleShape> botoes;
-    Font font;
     vector<Text> bitsEntrada, bitsSaida;
+    vector<BUttonComponentApp> painel;
+    Font font;
 
     if (!font.loadFromFile("../Fontes/ARIAL.TTF")) {
         std::cerr << "Erro ao carregar a fonte!" << endl;
     }
+
     configureButtonsInput(botoes, font, bitsEntrada);
+    painelComponentes(window, font, painel);
 
     while (window.isOpen()) {
         Event event;
@@ -48,7 +52,7 @@ void AppSimulador::mainDoApp() {
 
         window.clear(Color::White);
 
-        painelComponentes(window, font);
+        drawPainel(window, painel);
         plotEntradaBIts(window, botoes, font);
         plotSaidaBits(window, font);
 
@@ -144,30 +148,27 @@ void AppSimulador::plotSaidaBits(RenderWindow &window, Font fonte) {
     }
 }
 
-void AppSimulador::painelComponentes(RenderWindow &window, Font font) {
+void AppSimulador::painelComponentes(RenderWindow &window, Font font, vector<BUttonComponentApp> &painel) {
     vector<ComponentesApp*>::iterator it;
     Vector2f position;
     position.x = INI_COLUM_PAINEL;
     position.y = INI_LINHA_PAINEL;
 
     for (it = registroDeComponentes.begin(); it < registroDeComponentes.end(); it++) {
-        RectangleShape tmpShape;
-        tmpShape.setSize(Vector2f(50.f, 30.f));
-        tmpShape.setFillColor(Color::Blue);
-        tmpShape.setPosition(position.x, position.y);
 
-        Text tmpLabel;
-        tmpLabel.setFont(font);
-        tmpLabel.setString((*it)->getNome());
-        tmpLabel.setCharacterSize(14);
-        tmpLabel.setFillColor(Color::White);
-        tmpLabel.setPosition(position.x + 5, position.y + 5);
+        BUttonComponentApp botao(position,font,(*it)->getNome());
+        painel.push_back(botao);
 
         position.y += 50;
-        window.draw(tmpShape);
-        window.draw(tmpLabel);
 
-        // cout << (*it)->getNome();
+    }
+}
+
+void AppSimulador::drawPainel(RenderWindow &window, vector<BUttonComponentApp> &painel) {
+    vector<BUttonComponentApp>::iterator it;
+
+    for (it = painel.begin(); it < painel.end(); it++) {
+        (*it).draw(window);
     }
 }
 
