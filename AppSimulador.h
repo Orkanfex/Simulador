@@ -8,6 +8,7 @@
 #include <vector>
 #include "ComponentesApp.h"
 #include "CalcLogico.h"
+#include "BUttonComponentApp.h"
 #include  <SFML/Graphics.hpp>
 
 #define INI_LINHA_PAINEL 100;
@@ -37,7 +38,8 @@ public:
     void configureButtonsInput(vector<RectangleShape> &botoes, Font fonte, vector<Text> &text);
     void plotEntradaBIts(RenderWindow &windows, vector<RectangleShape> &botoes, Font font);
     void plotSaidaBits(RenderWindow &window, Font font);
-    void painelComponentes(RenderWindow &window, Font font);
+    void painelComponentes(RenderWindow &window, Font font, vector<BUttonComponentApp> &painel);
+    void drawPainel(RenderWindow &window, vector<BUttonComponentApp> &painel);
     ~AppSimulador();
 };
 
