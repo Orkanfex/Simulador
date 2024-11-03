@@ -1,14 +1,10 @@
+//#include "Gerenciador_Componentes.h"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include "AND.h"
-#include "OR.h"
-#include "NOT.h"
-#include "WIRE.h"
-#include "Alocar.h"
-#include "IO.h"
-#include <SFML/Graphics.hpp>
+#include <string>
 
-#include "BOARD.h"
+#include "AppSimulador.h"
 
 #define INIT_PROTO_X 225
 #define INIT_PROTO_Y 150
@@ -18,33 +14,62 @@
 using namespace std;
 using namespace sf;
 
-void plotProtoboard(RenderWindow &window) {
-    vector<CircleShape> conector;
-    vector<CircleShape>::iterator it;
+class Component {
+public:
+    RectangleShape shape;
+    Text label;
+    bool isDragging;
 
+    Component(Vector2f size, Vector2f position, const string& text, Font& font)
+        : isDragging(false) {
+        shape.setSize(size);
+        shape.setFillColor(Color::Blue);
+        shape.setPosition(position);
+
+        label.setFont(font);
+        label.setString(text);
+        label.setCharacterSize(14);
+        label.setFillColor(Color::White);
+        label.setPosition(position.x + 5, position.y + 5);
+    }
+
+    void draw(RenderWindow& window) {
+        window.draw(shape);
+        window.draw(label);
+    }
+
+    // Operador == para comparar componentes
+    bool operator==(const Component& other) const {
+        // Comparar posição e texto do rótulo
+        return shape.getPosition() == other.shape.getPosition() &&
+               label.getString() == other.label.getString();
+    }
+};
+
+struct Connection {
+    Vector2f start;
+    Vector2f end;
+};
+
+void plotProtoboard(RenderWindow &window, vector<CircleShape>& conector) {
     int posixy[8][8][2];
     int x, y;
 
     RectangleShape protoboardBorda(Vector2f(400.f, 400.f));
-
     protoboardBorda.setOutlineColor(Color::Black);
     protoboardBorda.setOutlineThickness(5.f);
     protoboardBorda.setPosition(205, 135);
 
-
-    // plot protoboard
-    x = INIT_PROTO_X; // as linhas começam no 225
-    for (int i = 0; i < 8; i++)
-    {
-        y = INIT_PROTO_Y; // as colunas começam no 150
-        for (int j = 0; j < 8; j++)
-        {
+    x = INIT_PROTO_X;
+    for (int i = 0; i < 8; i++) {
+        y = INIT_PROTO_Y;
+        for (int j = 0; j < 8; j++) {
             posixy[i][j][0] = x;
             posixy[i][j][1] = y;
 
             CircleShape shape(5.f);
-            shape.setFillColor(sf::Color::Black);
-            shape.setPosition(x,y);
+            shape.setFillColor(Color::Black);
+            shape.setPosition(x, y);
             conector.push_back(shape);
 
             y += PADDING_CONCTOR;
@@ -53,108 +78,138 @@ void plotProtoboard(RenderWindow &window) {
     }
 
     window.draw(protoboardBorda);
-    for (it = conector.begin(); it < conector.end(); ++it)
-    {
-        window.draw(*it);
+    for (auto &shape : conector) {
+        window.draw(shape);
     }
 }
 
-void plotEntradaBits(RenderWindow &window) {
-    int x, y;
-    RectangleShape entradaDados(Vector2(SIZE_PROTOBOARD/1.4f, 30.f));
-    vector<CircleShape> conector;
-    vector<CircleShape>::iterator it;
-
-    Text bitTxt;
-    vector<Text> bitsTxt;
-    vector<Text>::iterator itxt;
-
-
-    y = INIT_PROTO_Y+SIZE_PROTOBOARD+(PADDING_CONCTOR/2); // as colunas começam no 150
-    x = INIT_PROTO_X-(PADDING_CONCTOR/2) + (PADDING_CONCTOR*1.6); // as linhas começam no 225
-
-    entradaDados.setOutlineThickness(5.f);
-    entradaDados.setOutlineColor(Color::Black);
-    entradaDados.setPosition(x-PADDING_CONCTOR/2.f,y+(PADDING_CONCTOR/2.f));
-
-    for (int j = 0; j < 8; j++)
-    {
-        // posixy[i][j][0] = x;
-        // posixy[i][j][1] = y;
-
-        CircleShape shape(5.f);
-        shape.setFillColor(sf::Color::Black);
-        shape.setPosition(x,y);
-        conector.push_back(shape);
-
-        bitTxt.setPosition(x,y);
-        // bitTxt.setString()
-        bitTxt.setFillColor(Color::Black);
-
-        bitsTxt.push_back(bitTxt);
-
-        x += (PADDING_CONCTOR/1.5);
+void drawConnections(RenderWindow &window, const vector<Connection>& connections) {
+    for (const auto& conn : connections) {
+        Vertex line[] = {
+            Vertex(conn.start, Color::Red),
+            Vertex(conn.end, Color::Red)
+        };
+        window.draw(line, 3, Lines);
     }
+}
 
-    window.draw(entradaDados);
-    for (it = conector.begin(); it < conector.end(); ++it)
-    {
-        window.draw(*it);
+void configureButtonsInput(vector<RectangleShape> &botoes, Font fonte) {
+    for (int i = 0; i < 8; i++) {
+        RectangleShape botao(Vector2f(20.f, 20.f));
+        botoes.push_back(botao);
+
     }
 
 }
-
 int main() {
-    BOARD myBoard;
-    RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+    AppSimulador app;
+    WireApp wire;
+    PortaAndApp pAnd;
 
-    CircleShape circulo(10.f);
-    circulo.setFillColor(Color::Red);
-    circulo.setPosition(250,250);
-
-    while (window.isOpen())
-    {
-        Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == Event::Closed)
-                window.close();
-            
-            if (event.mouseButton.button == Mouse::Left){
-                cout << "botao esquerdo mouse";
-            }
-        }
-
-
-
-        window.clear(Color::White);
-
-        plotProtoboard(window);
-        plotEntradaBits(window);
-        window.draw(circulo);
-
-        window.display();
-    }
-    
-    // Alocar alocador;
-
-    // // Criação de componentes lógicos
-    // AND andGate(0, 0, 1, 0, 2, 0);
-    // OR orGate(0, 0, 1, 1, 2, 1);
-    // NOT notGate(0, 0, 2, 2);
-    // WIRE wire(0, 0, 1, 1);
-
-    // // Adiciona os componentes ao alocador e os aloca
-    // alocador.adicionarComponente(&andGate);
-    // alocador.adicionarComponente(&orGate);
-    // alocador.adicionarComponente(&notGate);
-    // alocador.adicionarComponente(&wire);
-
-    // // Executa a simulação
-    // alocador.simular();
-
-    // // Exibe o estado da protoboard
-    // alocador.imprimirBoard();
+    app.registraComponente(&wire);
+    app.registraComponente(&pAnd);
+    app.mainDoApp();
+    //
+    // vector<CircleShape> conector;
+    // Font font;
+    //
+    // vector<Component> components;
+    // vector<Component> userComponents;
+    //
+    // components.emplace_back(Vector2f(50.f, 30.f), Vector2f(30, 100), "AND", font);
+    // components.emplace_back(Vector2f(50.f, 30.f), Vector2f(30, 150), "OR", font);
+    // components.emplace_back(Vector2f(50.f, 30.f), Vector2f(30, 200), "NOT", font);
+    //
+    // RectangleShape trashCan(Vector2f(60.f, 60.f));
+    // trashCan.setFillColor(Color(128, 128, 128));
+    // trashCan.setPosition(700, 700);
+    //
+    // while (window.isOpen()) {
+    //     Event event;
+    //     while (window.pollEvent(event)) {
+    //         if (event.type == Event::Closed)
+    //             window.close();
+    //
+    //         if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
+    //             Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+    //
+    //             /*if (firstClick.x != -1) {
+    //                 connections.push_back({firstClick, mousePos});
+    //                 firstClick = {-1, -1}; // Reseta o primeiro clique
+    //             } else {
+    //                 firstClick = mousePos; // Armazena o primeiro clique
+    //             }*/
+    //
+    //             // for (int i = 0; i < conector.size(); ++i) {
+    //             //     if (conector[i].getGlobalBounds().contains(mousePos)) {
+    //             //         if (firstClick.x == -1) {
+    //             //             firstClick = conector[i].getPosition();
+    //             //         } else {
+    //             //             connections.push_back({firstClick, conector[i].getPosition()});
+    //             //             firstClick = {-1, -1};
+    //             //         }
+    //             //     }
+    //             // }
+    //
+    //             for (auto& component : components) {
+    //                 if (component.shape.getGlobalBounds().contains(mousePos)) {
+    //                     userComponents.emplace_back(component.shape.getSize(),
+    //                                                 Vector2f(mousePos.x, mousePos.y),
+    //                                                 component.label.getString(), font);
+    //                     userComponents.back().isDragging = true;
+    //                 }
+    //             }
+    //
+    //             for (auto& component : userComponents) {
+    //                 if (component.shape.getGlobalBounds().contains(mousePos)) {
+    //                     component.isDragging = true;
+    //                 }
+    //             }
+    //         }
+    //
+    //         if (event.type == Event::MouseButtonReleased && event.mouseButton.button == Mouse::Left) {
+    //             Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+    //             for (auto& component : userComponents) {
+    //                 if (component.isDragging) {
+    //                     component.isDragging = false;
+    //                     if (trashCan.getGlobalBounds().contains(mousePos)) {
+    //                         cout << "Componente descartado!" << endl;
+    //                         userComponents.erase(remove(userComponents.begin(), userComponents.end(), component), userComponents.end());
+    //                         break;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //
+    //         if (event.type == Event::MouseMoved) {
+    //             Vector2f mousePos(event.mouseMove.x, event.mouseMove.y);
+    //             for (auto& component : userComponents) {
+    //                 if (component.isDragging) {
+    //                     component.shape.setPosition(mousePos);
+    //                     component.label.setPosition(mousePos.x + 5, mousePos.y + 5);
+    //                 }
+    //             }
+    //         }
+    //     }
+    //
+    //     window.clear(Color::White);
+    //
+    //     plotProtoboard(window, conector);
+    //     plotEntradaBits(window, entradas, botoes, font);
+    //     plotSaidaBits(window, saidas, font);  // Plot the output bits
+    //     drawConnections(window, connections);
+    //
+    //     for (auto& component : components) {
+    //         component.draw(window);
+    //     }
+    //     for (auto& component : userComponents) {
+    //         component.draw(window);
+    //     }
+    //
+    //     window.draw(trashCan);
+    //     drawConnections(window, connections);
+    //     window.display();
+    // }
 
     return 0;
 }

@@ -26,7 +26,7 @@ void BOARD::addComponentes(Componentes *component) {
 
 void BOARD::simulate() {
     for(auto comp : componente) {
-        comp->simulate(board);
+        comp->simulate();
     }
 }
 
